@@ -13,7 +13,7 @@ steps:
             docker build -t gcr.io/$PROJECT_ID/cloud_build/master/backend:$${VERSION} .
           elif [[ ${BRANCH_NAME} == "dev" ]] ; then
             docker build -t gcr.io/$PROJECT_ID/cloud_build/dev/backend:$${VERSION} .
-          else ; then
+          else
             docker build -t gcr.io/$PROJECT_ID/cloud_build/test/backend:$${VERSION} .
           fi
 
@@ -33,7 +33,7 @@ steps:
             docker push gcr.io/$PROJECT_ID/cloud_build/master/backend:$${VERSION}
           elif [[ ${BRANCH_NAME} == "dev" ]] ; then
             docker push gcr.io/$PROJECT_ID/cloud_build/dev/backend:$${VERSION}
-          else ; then
+          else
             docker push gcr.io/$PROJECT_ID/cloud_build/test/backend:$${VERSION}
           fi
 
