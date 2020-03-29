@@ -3,7 +3,7 @@ steps:
 ### Build
   - id: 'build'
     name: 'gcr.io/cloud_builders/docker'
-    entrypoint: 'bash'
+    entrypoint: 'bash' 
     args: 
       - '-c'
       - |
