@@ -4,9 +4,8 @@ steps:
 ### Build
   - id: 'build'
     name: 'gcr.io/cloud_builders/docker'
-    dir: 'microservices/backend'
     entrypoint: 'bash'
-    args: ["docker", "build", "-t", "gcr.io/$PROJECT_ID/cloud_build/$BRANCH_NAME/backend:$BRANCH_NAME-$SHORT_SHA", "."]
+    args: ["docker", "build", "-t", "gcr.io/$PROJECT_ID/cloud_build/$BRANCH_NAME/backend:$BRANCH_NAME-$SHORT_SHA", "microservices/backend"]
 
 
 ### Test
