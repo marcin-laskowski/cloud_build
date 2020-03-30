@@ -43,7 +43,7 @@ steps:
           IMAGE_NAME=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$BRANCH_NAME-$SHORT_SHA
 
           if [[ ${BRANCH_NAME} == "master" ]]; then BRANCH="prod"; else BRANCH="dev"; fi
-          sed -i "s#@IMAGE_NAME@#$$IMAGE_NAME#g" $${MANIFEST_PATH}/deployments/$${BRANCH}/*.yaml
+          sed -i "s#IMAGE_NAME#$${IMAGE_NAME}#g" $${MANIFEST_PATH}/deployments/$${BRANCH}/*.yaml
 
           kubectl apply -f $${MANIFEST_PATH}/deployments/$${BRANCH}/*.yaml
 

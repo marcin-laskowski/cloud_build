@@ -1,12 +1,14 @@
+apiVersion: apps/v1
 kind: Deployment
-apiVersion: extensions/v1beta1
 metadata:
   name: cloud_build-backend-dev
 spec:
-  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud_build
+  replicas: 2
   template:
     metadata:
-      name: backend
       labels:
         app: cloud_build
         role: backend
@@ -14,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/cloud-solutions-images/cloud_build:1.0.0
+        image: _IMAGE_NAME
         resources:
           limits:
             memory: "500Mi"
@@ -24,7 +26,5 @@ spec:
           httpGet:
             path: /healthz
             port: 8080
-        command: ["sh", "-c", "app -port=8080"]
         ports:
-        - name: backend
-          containerPort: 8080
+        - containerPort: 5000
