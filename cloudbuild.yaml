@@ -10,8 +10,8 @@ steps:
       - '-c'
       - |
           VERSION=$BRANCH_NAME-$SHORT_SHA
-          BRANCH=${if [[ ${BRANCH_NAME} == "master" ]] ; then "master"; else "dev"; fi}
-          docker build -t gcr.io/${PROJECT_ID}/cloud_build/$${BRANCH}/backend:$${VERSION} .
+          if [[ ${BRANCH_NAME} == "master" ]] ; then BRANCH="master"; else BRANCH="dev"; fi
+          docker build -t gcr.io/${PROJECT_ID}/cloud_build/$${BRANCH_NAME}/backend:$${VERSION} .
 
 
 ### Test
@@ -25,8 +25,8 @@ steps:
       - '-c'
       - |
           VERSION=$BRANCH_NAME-$SHORT_SHA
-          BRANCH=${if [[ ${BRANCH_NAME} == "master" ]] ; then "master"; else "dev"; fi}
-          docker push gcr.io/${PROJECT_ID}/cloud_build/$${BRANCH}/backend:$${VERSION}
+          if [[ ${BRANCH_NAME} == "master" ]]; then BRANCH="master"; else BRANCH="dev"; fi
+          docker push gcr.io/${PROJECT_ID}/cloud_build/$${BRANCH_NAME}/backend:$${VERSION}
 
 
 ### Prepare deploy
