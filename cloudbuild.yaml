@@ -11,7 +11,7 @@ steps:
       - |
           VERSION=$BRANCH_NAME-$SHORT_SHA
           if [[ ${BRANCH_NAME} == "master" ]] ; then BRANCH="master"; else BRANCH="dev"; fi
-          docker build -t gcr.io/${PROJECT_ID}/cloud_build/$${BRANCH_NAME}/backend:$${VERSION} .
+          docker build -t gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION} .
 
 
 ### Test
@@ -26,10 +26,41 @@ steps:
       - |
           VERSION=$BRANCH_NAME-$SHORT_SHA
           if [[ ${BRANCH_NAME} == "master" ]]; then BRANCH="master"; else BRANCH="dev"; fi
-          docker push gcr.io/${PROJECT_ID}/cloud_build/$${BRANCH_NAME}/backend:$${VERSION}
+          docker push gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION}
 
 
 ### Prepare deploy
-
+  - id: 'prepare deploy'
+    name: 'gcr.io/cloud-builders/gke-deploy'
+    args:
+    - 'prepare'
+    - '--filename=kubernetes/backend/deployment/${BRANCH_NAME}'
+    - '--image=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION}'
 
 ### Deploy
+  - name: 'gcr.io/cloud-builders/gke-deploy'
+    id: 'Apply deploy'
+    args:
+    - 'apply'
+    - '--filename=$_OUTPUT_BUCKET_PATH/expanded/*'
+    - '--cluster=models-cluster-dev'
+    - '--location=europe-west3-a'
+
+# images:
+# - '$_IMAGE_NAME:$_IMAGE_VERSION'
+
+# substitutions:
+#   _DOCKERFILE_PATH: Dockerfile
+#   _IMAGE_NAME:
+#   _IMAGE_VERSION:
+#   _GKE_CLUSTER:
+#   _GKE_LOCATION:
+#   _K8S_YAML_PATH:
+#   _K8S_APP_NAME:
+#   _K8S_NAMESPACE:
+#   _OUTPUT_BUCKET_PATH:
+
+# options:
+#   substitution_option: 'ALLOW_LOOSE'
+
+# tags: [$_K8S_APP_NAME']
