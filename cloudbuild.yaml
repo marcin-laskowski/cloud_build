@@ -16,7 +16,7 @@ steps:
           else
             TAG="gcr.io/$PROJECT_ID/cloud_build/test/backend:$${VERSION}"
           fi
-          docker build -t $TAG .
+          docker build -t $${TAG} .
 
 ### Test
 
@@ -27,6 +27,6 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     dir: 'microservices/backend'
     entrypoint: 'bash'
-    args: ["docker", "push", "$TAG"]
+    args: ["docker", "push", "$${TAG}"]
 
 ### Deploy
