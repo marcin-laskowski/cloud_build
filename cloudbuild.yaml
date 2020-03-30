@@ -39,7 +39,7 @@ steps:
     args:
       - '-c'
       - |
-          MANIFEST_PATH=kubernetes/backend/
+          MANIFEST_PATH=kubernetes/backend
           IMAGE_NAME=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$BRANCH_NAME-$SHORT_SHA
 
           if [[ ${BRANCH_NAME} == "master" ]]; then BRANCH="prod"; else BRANCH="dev"; fi
