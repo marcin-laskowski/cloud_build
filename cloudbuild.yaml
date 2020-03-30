@@ -44,7 +44,7 @@ steps:
     - 'apply'
     - '--filename=$_OUTPUT_BUCKET_PATH/expanded/*'
     - '--cluster=models-cluster-dev'
-    - '--location=europe-west3'
+    - '--location=europe-west3-a'
 
 # images:
 # - '$_IMAGE_NAME:$_IMAGE_VERSION'
