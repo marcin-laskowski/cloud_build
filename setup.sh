@@ -5,3 +5,8 @@
 source config
 export $(cut -d= -f1 config)
 
+
+gcloud projects add-iam-policy-binding developer-269501 \
+    --member=serviceAccount:383252814451@cloudbuild.gserviceaccount.com \
+    --role=roles/container.developer
+
