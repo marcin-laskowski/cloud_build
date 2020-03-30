@@ -10,12 +10,13 @@ steps:
       - |
           [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
           if [[ ${BRANCH_NAME} == "master" ]] ; then
-            docker build -t gcr.io/$PROJECT_ID/cloud_build/master/backend:$${VERSION} .
+            TAG="gcr.io/$PROJECT_ID/cloud_build/master/backend:$${VERSION}"
           elif [[ ${BRANCH_NAME} == "dev" ]] ; then
-            docker build -t gcr.io/$PROJECT_ID/cloud_build/dev/backend:$${VERSION} .
+            TAG="gcr.io/$PROJECT_ID/cloud_build/dev/backend:$${VERSION}"
           else
-            docker build -t gcr.io/$PROJECT_ID/cloud_build/test/backend:$${VERSION} .
+            TAG="gcr.io/$PROJECT_ID/cloud_build/test/backend:$${VERSION}"
           fi
+          docker build -t $TAG .
 
 ### Test
 
@@ -26,16 +27,6 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     dir: 'microservices/backend'
     entrypoint: 'bash'
-    args: 
-      - '-c'
-      - |
-          [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
-          if [[ ${BRANCH_NAME} == "master" ]] ; then
-            docker push gcr.io/$PROJECT_ID/cloud_build/master/backend:$${VERSION}
-          elif [[ ${BRANCH_NAME} == "dev" ]] ; then
-            docker push gcr.io/$PROJECT_ID/cloud_build/dev/backend:$${VERSION}
-          else
-            docker push gcr.io/$PROJECT_ID/cloud_build/test/backend:$${VERSION}
-          fi
+    args: ["docker", "push", "$TAG"]
 
 ### Deploy
