@@ -39,6 +39,8 @@ steps:
     args:
       - '-c'
       - |
+          gcloud container clusters get-credentials models-cluster-dev --zone=europe-west3-a
+
           MANIFEST_PATH=kubernetes/backend
           IMAGE_NAME=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$BRANCH_NAME-$SHORT_SHA
 
