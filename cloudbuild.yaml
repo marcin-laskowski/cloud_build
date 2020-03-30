@@ -33,9 +33,11 @@ steps:
   - id: 'prepare deploy'
     name: 'gcr.io/cloud-builders/gke-deploy'
     args:
-    - 'prepare'
-    - '--filename=kubernetes/backend/deployment/${BRANCH_NAME}'
-    - '--image=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION}'
+      - '-c'
+      - |
+          VERSION=$BRANCH_NAME-$SHORT_SHA
+          prepare --filename=kubernetes/backend/deployment/${BRANCH_NAME} \
+                  --image=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION}'
 
 ### Deploy
   - name: 'gcr.io/cloud-builders/gke-deploy'
