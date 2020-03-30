@@ -43,7 +43,7 @@ steps:
     id: 'Apply deploy'
     args:
     - 'apply'
-    - '--filename=$_OUTPUT_BUCKET_PATH/expanded/*'
+    - '--filename=output/expanded/*'
     - '--cluster=models-cluster-dev'
     - '--location=europe-west3-a'
 
