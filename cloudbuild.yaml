@@ -2,31 +2,31 @@ steps:
 
 
 ### Build
-  - id: 'build'
-    name: 'gcr.io/cloud_builders/docker'
-    dir: 'microservices/backend'
-    entrypoint: 'bash'
-    args: 
-      - '-c'
-      - |
-          VERSION=$BRANCH_NAME-$SHORT_SHA
-          if [[ ${BRANCH_NAME} == "master" ]] ; then BRANCH="master"; else BRANCH="dev"; fi
-          docker build -t gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION} .
+#   - id: 'build'
+#     name: 'gcr.io/cloud_builders/docker'
+#     dir: 'microservices/backend'
+#     entrypoint: 'bash'
+#     args: 
+#       - '-c'
+#       - |
+#           VERSION=$BRANCH_NAME-$SHORT_SHA
+#           if [[ ${BRANCH_NAME} == "master" ]] ; then BRANCH="master"; else BRANCH="dev"; fi
+#           docker build -t gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION} .
 
 
 ### Test
 
 
 ### Publish
-  - id: 'publish'
-    name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: 
-      - '-c'
-      - |
-          VERSION=$BRANCH_NAME-$SHORT_SHA
-          if [[ ${BRANCH_NAME} == "master" ]]; then BRANCH="master"; else BRANCH="dev"; fi
-          docker push gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION}
+#   - id: 'publish'
+#     name: 'gcr.io/cloud-builders/docker'
+#     entrypoint: 'bash'
+#     args: 
+#       - '-c'
+#       - |
+#           VERSION=$BRANCH_NAME-$SHORT_SHA
+#           if [[ ${BRANCH_NAME} == "master" ]]; then BRANCH="master"; else BRANCH="dev"; fi
+#           docker push gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION}
 
 
 ### Deploy
