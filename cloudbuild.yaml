@@ -29,23 +29,43 @@ steps:
           docker push gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$${VERSION}
 
 
-### Prepare deploy
-  - id: 'prepare deploy'
-    name: 'gcr.io/cloud-builders/gke-deploy'
-    args:
-      - 'prepare'
-      - '--filename=kubernetes/backend/deployments/${BRANCH_NAME}'
-      - '--image=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:${BRANCH_NAME}-${SHORT_SHA}'
-      - '--output=gs://bucketconfig-01/'
-
 ### Deploy
-  - name: 'gcr.io/cloud-builders/gke-deploy'
-    id: 'Apply deploy'
+  - id: 'deploy'
+    name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: bash
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=europe-west3-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=models-cluster-dev'
     args:
-    - 'apply'
-    - '--filename=gs://bucketconfig-01/expanded'
-    - '--cluster=models-cluster-dev'
-    - '--location=europe-west3-a'
+      - '-c'
+      - |
+          MANIFEST_PATH=kubernetes/backend/
+          IMAGE_NAME=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:$BRANCH_NAME-$SHORT_SHA
+
+          if [[ ${BRANCH_NAME} == "master" ]]; then BRANCH="prod"; else BRANCH="dev"; fi
+          sed -i "s#@IMAGE_NAME@#$$IMAGE_NAME#g" $${MANIFEST_PATH}/deployments/$${BRANCH}/*.yaml
+
+          kubectl apply -f $${MANIFEST_PATH}/deployments/$${BRANCH}/*.yaml
+
+
+
+### Prepare deploy
+#   - id: 'prepare deploy'
+#     name: 'gcr.io/cloud-builders/gke-deploy'
+#     args:
+#       - 'prepare'
+#       - '--filename=kubernetes/backend/deployments/${BRANCH_NAME}'
+#       - '--image=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:${BRANCH_NAME}-${SHORT_SHA}'
+#       - '--output=gs://bucketconfig-01/'
+
+# ### Deploy
+#   - name: 'gcr.io/cloud-builders/gke-deploy'
+#     id: 'Apply deploy'
+#     args:
+#     - 'apply'
+#     - '--filename=gs://bucketconfig-01/expanded/*'
+#     - '--cluster=models-cluster-dev'
+#     - '--location=europe-west3-a'
 
 # images:
 # - '$_IMAGE_NAME:$_IMAGE_VERSION'
