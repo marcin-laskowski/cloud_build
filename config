@@ -6,10 +6,13 @@ ZONE=europe-west3-a
 CLUSTER_PROD=standard-cluster-1
 CLUSTER_DEV=models-cluster-dev
 
-DISK_PROD=syndicai-disk-prod
-DISK_DEV=syndicai-disk-dev
+DISK_PROD=disk-prod
+DISK_DEV=disk-dev
 
-DB_PROD=syndicai-sql-prod
-DB_PROD_INSTANCE=syndicai-sqlinstance-prod
-DB_DEV=syndicai-sql-dev
-DB_DEV_INSTANCE=syndicai-sqlinstance-dev
+DB_PROD=sql-prod
+DB_PROD_INSTANCE=sqlinstance-prod
+DB_DEV=sql-dev
+DB_DEV_INSTANCE=sqlinstance-dev
+
+BUCKET_PROD=bucket-prod
+BUCKET_DEV=bucket-dev

@@ -36,14 +36,14 @@ steps:
       - 'prepare'
       - '--filename=kubernetes/backend/deployments/${BRANCH_NAME}'
       - '--image=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:${BRANCH_NAME}-${SHORT_SHA}'
-      - '--output=output'
+      - '--output=gs://bucketconfig-01/'
 
 ### Deploy
   - name: 'gcr.io/cloud-builders/gke-deploy'
     id: 'Apply deploy'
     args:
     - 'apply'
-    - '--filename=output/expanded/*'
+    - '--filename=gs://bucketconfig-01/expanded'
     - '--cluster=models-cluster-dev'
     - '--location=europe-west3-a'
 
