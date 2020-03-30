@@ -25,8 +25,18 @@ steps:
 ### Publish
   - id: 'publish'
     name: 'gcr.io/cloud-builders/docker'
-    dir: 'microservices/backend'
     entrypoint: 'bash'
-    args: ["docker", "push", "$${TAG}"]
+    args: 
+      - '-c'
+      - |
+          [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
+          if [[ ${BRANCH_NAME} == "master" ]] ; then
+            TAG="gcr.io/$PROJECT_ID/cloud_build/master/backend:$${VERSION}"
+          elif [[ ${BRANCH_NAME} == "dev" ]] ; then
+            TAG="gcr.io/$PROJECT_ID/cloud_build/dev/backend:$${VERSION}"
+          else
+            TAG="gcr.io/$PROJECT_ID/cloud_build/test/backend:$${VERSION}"
+          fi
+          docker push $${TAG}
 
 ### Deploy
