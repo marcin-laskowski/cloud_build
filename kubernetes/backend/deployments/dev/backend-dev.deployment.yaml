@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloud_build-backend-dev
+  name: cloudbuildbackend
 spec:
   selector:
     matchLabels:
-      app: cloud_build
+      app: cloudbuild
   replicas: 2
   template:
     metadata:
       labels:
-        app: cloud_build
+        app: cloudbuild
         role: backend
         env: dev
     spec:
