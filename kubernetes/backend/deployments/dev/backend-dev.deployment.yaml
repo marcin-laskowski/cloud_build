@@ -22,9 +22,5 @@ spec:
             memory: "500Mi"
             cpu: "100m"
         imagePullPolicy: Always
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 5000
         ports:
         - containerPort: 5000
