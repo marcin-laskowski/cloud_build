@@ -1,14 +1,26 @@
 # cloud_build
 Continuous deployment with Cloud Build on GKE
 
+## Intro
+The idea of this repository is to present the workflow for platforms deployed on GKE.
+Current approach takes into the considerations four stages of work.
+
+1. **Local**
+
+1. Dev
+
+1. Canary
+
+1. Production
+
 
 
 ## Setup
 
 ### 1. Create trigger
-- 1. Go to **Cloud Build** service and choose card: **Triggers**
-- 1. Connect your GitHub repository with option: **GitHub (Cloud Build GitHub App)**
-- 1. Create trigger for the branch
+1.  Go to **Cloud Build** service and choose card: **Triggers**
+1. Connect your GitHub repository with option: **GitHub (Cloud Build GitHub App)**
+1. Create trigger for the branch
 
 ### 2. Run environment variables
 ```bash
