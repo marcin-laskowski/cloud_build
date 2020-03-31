@@ -38,18 +38,18 @@ steps:
       - '-c'
       - |
           [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
-          [[ "$TAG_NAME" ]] && VERSION=$TAG_NAME
+          [[ "$TAG_NAME" ]] && VERSION=$TAG_NAME BRANCH_NAME=master
           IMAGE_NAME=gcr.io/${PROJECT_ID}/cloud_build/backend:$${VERSION}
       
-          if [[ "$TAG_NAME" ]] ; then
+          if [[ "$TAG_NAME" ]]; then
             TARGET_ENV=prod
-            CLUSTER_NAME=$_CLUSTER_PROD;
-          elif [[ ${BRANCH_NAME} == "master" ]] ; then
+            CLUSTER_NAME=$_CLUSTER_PROD
+          elif [[ ${BRANCH_NAME} == "master" ]]; then
             TARGET_ENV=canary
-            CLUSTER_NAME=$_CLUSTER_PROD;
+            CLUSTER_NAME=$_CLUSTER_PROD
           else 
             TARGET_ENV=dev
-            CLUSTER_NAME=$_CLUSTER_DEV;
+            CLUSTER_NAME=$_CLUSTER_DEV
           fi
           
           gcloud container clusters get-credentials $${CLUSTER_NAME} --zone=$_ZONE
