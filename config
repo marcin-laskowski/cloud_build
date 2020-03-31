@@ -13,6 +13,3 @@ DB_PROD=sql-prod
 DB_PROD_INSTANCE=sqlinstance-prod
 DB_DEV=sql-dev
 DB_DEV_INSTANCE=sqlinstance-dev
-
-BUCKET_PROD=bucket-prod
-BUCKET_DEV=bucket-dev

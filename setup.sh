@@ -11,7 +11,6 @@ export $(cut -d= -f1 config)
 #     --role=roles/container.developer
 
 
-cloud-build-local --config=cloudbuild.yaml \
-     --push=false \
-     --bind-mount-source=true/false \
-     .
+#cloud-build-local --config=cloudbuild.yaml \
+#     --push=false \
+#     --bind-mount-source=true/false \

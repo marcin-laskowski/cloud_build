@@ -10,8 +10,17 @@ Continuous deployment with Cloud Build on GKE
 - 1. Connect your GitHub repository with option: **GitHub (Cloud Build GitHub App)**
 - 1. Create trigger for the branch
 
-### 2. 
+### 2. Run environment variables
+```bash
+. setup.sh
+```
 
+### 3. Push changes
+```bash
+git add .
+git commit -m "change"
+git push
+```
 
 
 
