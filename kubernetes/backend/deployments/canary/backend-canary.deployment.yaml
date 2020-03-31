@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudbuildbackend-dev
+  name: cloudbuildbackend-canary
 spec:
   selector:
     matchLabels:
@@ -12,7 +12,7 @@ spec:
       labels:
         app: cloudbuild
         role: backend
-        env: dev
+        env: canary
     spec:
       containers:
       - name: backend

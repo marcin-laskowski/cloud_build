@@ -8,8 +8,8 @@ steps:
     args: 
       - '-c'
       - |
-          VERSION=$BRANCH_NAME-$SHORT_SHA
-          if [[ ${BRANCH_NAME} == "master" ]] ; then BRANCH=prod; else BRANCH=dev; fi
+          [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
+          [[ "$TAG_NAME" ]] && VERSION=$TAG_NAME
           docker build -t gcr.io/${PROJECT_ID}/cloud_build/backend:$${VERSION} .
 
 
@@ -23,8 +23,8 @@ steps:
     args: 
       - '-c'
       - |
-          VERSION=$BRANCH_NAME-$SHORT_SHA
-          if [[ ${BRANCH_NAME} == "master" ]]; then BRANCH=master; else BRANCH=dev; fi
+          [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
+          [[ "$TAG_NAME" ]] && VERSION=$TAG_NAME
           docker push gcr.io/${PROJECT_ID}/cloud_build/backend:$${VERSION}
 
 
@@ -37,20 +37,25 @@ steps:
     args:
       - '-c'
       - |
-          if [[ ${BRANCH_NAME} == "master" ]]; then
+          [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
+          [[ "$TAG_NAME" ]] && VERSION=$TAG_NAME
+          IMAGE_NAME=gcr.io/${PROJECT_ID}/cloud_build/backend:$${VERSION}
+      
+          if [[ "$TAG_NAME" ]] ; then
+            TARGET_ENV=prod
             CLUSTER_NAME=$_CLUSTER_PROD
-            BRANCH=prod; 
+          elif [[ ${BRANCH_NAME} == "master" ]] ; then
+            TARGET_ENV=canary
+            CLUSTER_NAME=$_CLUSTER_PROD
           else 
+            TARGET_ENV=dev
             CLUSTER_NAME=$_CLUSTER_DEV
-            BRANCH=dev; 
           fi
-          MANIFEST_PATH=kubernetes/backend
-          IMAGE_NAME=gcr.io/${PROJECT_ID}/cloud_build/backend:$BRANCH_NAME-$SHORT_SHA
-
+          
           gcloud container clusters get-credentials $${CLUSTER_NAME} --zone=$_ZONE
           
-          sed -i "s#_IMAGE_NAME#$${IMAGE_NAME}#g" $${MANIFEST_PATH}/deployments/$${BRANCH}/*.yaml
-          kubectl apply -f $${MANIFEST_PATH}/deployments/$${BRANCH}/*.yaml
+          sed -i "s#_IMAGE_NAME#$${IMAGE_NAME}#g" kubernetes/backend/deployments/$${TARGET_ENV}/*.yaml
+          kubectl apply --recursive -f kubernetes/backend/deployments/$${TARGET_ENV}/*.yaml
 
 
 
