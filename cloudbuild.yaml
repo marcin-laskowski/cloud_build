@@ -45,16 +45,16 @@ steps:
             TARGET_ENV=prod
             CLUSTER_NAME=$_CLUSTER_PROD
           elif [[ ${BRANCH_NAME} == "master" ]] ; then
-            TARGET_ENV=canary; 
+            TARGET_ENV=canary
             CLUSTER_NAME=$_CLUSTER_PROD
           else 
-            TARGET_ENV=dev; 
+            TARGET_ENV=dev
             CLUSTER_NAME=$_CLUSTER_DEV
           fi
           
           gcloud container clusters get-credentials $${CLUSTER_NAME} --zone=$_ZONE
           
-          sed -i "s#_IMAGE_NAME#$${IMAGE_NAME}#g" $${MANIFEST_PATH}/deployments/$${TARGET_ENV}/*.yaml
+          sed -i "s#_IMAGE_NAME#$${IMAGE_NAME}#g" kubernetes/backend/deployments/$${TARGET_ENV}/*.yaml
           kubectl apply --recursive -f kubernetes/backend/deployments/$${TARGET_ENV}/*.yaml
 
 
