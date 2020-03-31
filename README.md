@@ -19,7 +19,7 @@ Current approach takes into the considerations four stages of work.
 1. Create trigger for the dev branch, master branch and tag. At the end you should have three triggers (check pic below).
 
 <p align="center">
-    src="https://github.com/mlaskowski17/cloud_build/blob/master/assets/tag.png">
+    <img src="https://github.com/mlaskowski17/cloud_build/blob/master/assets/tag.png">
 </p>
 
 ### 2. Run environment variables
@@ -36,7 +36,7 @@ git push
 At the end you should see similar results:
 
 <p align="center">
-    src="https://github.com/mlaskowski17/cloud_build/blob/master/assets/tag2.png">
+    <img src="https://github.com/mlaskowski17/cloud_build/blob/master/assets/tag2.png">
 </p>
 
 
