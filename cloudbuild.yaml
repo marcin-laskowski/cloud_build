@@ -43,14 +43,13 @@ steps:
       
           if [[ "$TAG_NAME" ]] ; then
             TARGET_ENV=prod
-            CLUSTER_NAME=$_CLUSTER_PROD
-            
+            CLUSTER_NAME=$_CLUSTER_PROD;
           elif [[ ${BRANCH_NAME} == "master" ]] ; then
             TARGET_ENV=canary
-            CLUSTER_NAME=$_CLUSTER_PROD
+            CLUSTER_NAME=$_CLUSTER_PROD;
           else 
             TARGET_ENV=dev
-            CLUSTER_NAME=$_CLUSTER_DEV
+            CLUSTER_NAME=$_CLUSTER_DEV;
           fi
           
           gcloud container clusters get-credentials $${CLUSTER_NAME} --zone=$_ZONE
