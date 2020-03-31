@@ -8,7 +8,7 @@ Current approach takes into the considerations four stages of work.
 1. **Local** - Check code in local environemnt with installed Minikube.
 1. **Dev** - Push to dev in order to deploy app on **dev cluster**.
 1. **Canary** - Push to master, deploy on **prod cluster** giving access only **20%** of users in order to validate platform in production.
-1. **Production** - **Tag** master commit in order to give access 100% to new version.
+1. **Production** - Push with **Tag** on master in order to give access 100% to new version.
 
 
 ## Setup
