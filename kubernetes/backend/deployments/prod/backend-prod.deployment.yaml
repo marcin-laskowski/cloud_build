@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudbuildbackend
+  name: cloudbuildbackend-prod
 spec:
   selector:
     matchLabels:
       app: cloudbuild
-  replicas: 2
+  replicas: 3
   template:
     metadata:
       labels:
