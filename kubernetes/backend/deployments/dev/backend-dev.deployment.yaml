@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudbuildbackend
+spec:
+  selector:
+    matchLabels:
+      app: cloudbuild
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: cloudbuild
+        role: backend
+        env: dev
+    spec:
+      containers:
+      - name: backend
+        image: _IMAGE_NAME
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000

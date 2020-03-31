@@ -4,18 +4,14 @@ steps:
   - id: 'build'
     name: 'gcr.io/cloud_builders/docker'
     dir: 'microservices/backend'
-    entrypoint: 'bash' 
+    entrypoint: 'bash'
     args: 
       - '-c'
       - |
-          [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
-          if [[ ${BRANCH_NAME} == "master" ]] ; then
-            docker build -t gcr.io/$PROJECT_ID/cloud_build/master/backend:$${VERSION} .
-          elif [[ ${BRANCH_NAME} == "dev" ]] ; then
-            docker build -t gcr.io/$PROJECT_ID/cloud_build/dev/backend:$${VERSION} .
-          else ; then
-            docker build -t gcr.io/$PROJECT_ID/cloud_build/test/backend:$${VERSION} .
-          fi
+          VERSION=$BRANCH_NAME-$SHORT_SHA
+          if [[ ${BRANCH_NAME} == "master" ]] ; then BRANCH=prod; else BRANCH=dev; fi
+          docker build -t gcr.io/${PROJECT_ID}/cloud_build/$${BRANCH}/backend:$${VERSION} .
+
 
 ### Test
 
@@ -23,18 +19,59 @@ steps:
 ### Publish
   - id: 'publish'
     name: 'gcr.io/cloud-builders/docker'
-    dir: 'microservices/backend'
     entrypoint: 'bash'
     args: 
       - '-c'
       - |
-          [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
-          if [[ ${BRANCH_NAME} == "master" ]] ; then
-            docker push gcr.io/$PROJECT_ID/cloud_build/master/backend:$${VERSION}
-          elif [[ ${BRANCH_NAME} == "dev" ]] ; then
-            docker push gcr.io/$PROJECT_ID/cloud_build/dev/backend:$${VERSION}
-          else ; then
-            docker push gcr.io/$PROJECT_ID/cloud_build/test/backend:$${VERSION}
-          fi
+          VERSION=$BRANCH_NAME-$SHORT_SHA
+          if [[ ${BRANCH_NAME} == "master" ]]; then BRANCH=master; else BRANCH=dev; fi
+          docker push gcr.io/${PROJECT_ID}/cloud_build/$${BRANCH}/backend:$${VERSION}
+
 
 ### Deploy
+  - id: 'deploy'
+    name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+          if [[ ${BRANCH_NAME} == "master" ]]; then
+            CLUSTER_NAME=$_CLUSTER_PROD
+            BRANCH=prod; 
+          else 
+            CLUSTER_NAME=$_CLUSTER_DEV
+            BRANCH=dev; 
+          fi
+          MANIFEST_PATH=kubernetes/backend
+          IMAGE_NAME=gcr.io/${PROJECT_ID}/cloud_build/$${BRANCH}/backend:$BRANCH_NAME-$SHORT_SHA
+
+          gcloud container clusters get-credentials $${CLUSTER_NAME} --zone=$_ZONE
+          
+          sed -i "s#_IMAGE_NAME#$${IMAGE_NAME}#g" $${MANIFEST_PATH}/deployments/$${BRANCH}/*.yaml
+          echo ""
+          kubectl apply -f $${MANIFEST_PATH}/deployments/$${BRANCH}/*.yaml
+
+
+
+### Prepare deploy
+#   - id: 'prepare deploy'
+#     name: 'gcr.io/cloud-builders/gke-deploy'
+#     args:
+#       - 'prepare'
+#       - '--filename=kubernetes/backend/deployments/${BRANCH_NAME}'
+#       - '--image=gcr.io/${PROJECT_ID}/cloud_build/${BRANCH_NAME}/backend:${BRANCH_NAME}-${SHORT_SHA}'
+#       - '--output=gs://bucketconfig-01/'
+
+# ### Deploy
+#   - name: 'gcr.io/cloud-builders/gke-deploy'
+#     id: 'Apply deploy'
+#     args:
+#     - 'apply'
+#     - '--filename=gs://bucketconfig-01/expanded/*'
+#     - '--cluster=models-cluster-dev'
+#     - '--location=europe-west3-a'
+
+substitutions:
+  _ZONE: europe-west3-a
+  _CLUSTER_PROD: standard-cluster-1
+  _CLUSTER_DEV: models-cluster-dev

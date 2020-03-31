@@ -1,0 +1,15 @@
+PROJECT_ID=developer-269501
+
+REGION=europe-west3
+ZONE=europe-west3-a
+
+CLUSTER_PROD=standard-cluster-1
+CLUSTER_DEV=models-cluster-dev
+
+DISK_PROD=disk-prod
+DISK_DEV=disk-dev
+
+DB_PROD=sql-prod
+DB_PROD_INSTANCE=sqlinstance-prod
+DB_DEV=sql-dev
+DB_DEV_INSTANCE=sqlinstance-dev
