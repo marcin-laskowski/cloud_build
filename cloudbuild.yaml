@@ -44,6 +44,7 @@ steps:
           if [[ "$TAG_NAME" ]] ; then
             TARGET_ENV=prod
             CLUSTER_NAME=$_CLUSTER_PROD
+            
           elif [[ ${BRANCH_NAME} == "master" ]] ; then
             TARGET_ENV=canary
             CLUSTER_NAME=$_CLUSTER_PROD
