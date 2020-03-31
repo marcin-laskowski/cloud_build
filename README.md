@@ -13,10 +13,14 @@ Current approach takes into the considerations four stages of work.
 
 ## Setup
 
-### 1. Create trigger
+### 1. Create triggers
 1. Go to **Cloud Build** service and choose card: **Triggers**
 1. Connect your GitHub repository with option: **GitHub (Cloud Build GitHub App)**
-1. Create trigger for the branch
+1. Create trigger for the dev branch, master branch and tag. At the end you should have three triggers (check pic below).
+
+<p align="center">
+    src="https://github.com/mlaskowski17/cloud_build/blob/master/assets/tag.png">
+</p>
 
 ### 2. Run environment variables
 ```bash
@@ -29,6 +33,11 @@ git add .
 git commit -m "change"
 git push
 ```
+At the end you should see similar results:
+
+<p align="center">
+    src="https://github.com/mlaskowski17/cloud_build/blob/master/assets/tag2.png">
+</p>
 
 
 
