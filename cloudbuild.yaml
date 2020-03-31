@@ -33,6 +33,10 @@ steps:
   - id: 'deploy'
     name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: bash
+    env:
+      - CLUSTER_PROD=${CLUSTER_PROD}
+      - CLUSTER_DEV=${CLUSTER_DEV}
+      - ZONE=$ZONE
     args:
       - '-c'
       - |
