@@ -37,14 +37,14 @@ steps:
     args:
       - '-c'
       - |
-          [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA}
-          [[ "$TAG_NAME" ]] && VERSION=$TAG_NAME BRANCH_NAME=master
+          [[ "$BRANCH_NAME" ]] && VERSION=${BRANCH_NAME}-${SHORT_SHA} BRANCH=$BRANCH_NAME
+          [[ "$TAG_NAME" ]] && VERSION=$TAG_NAME BRANCH=master
           IMAGE_NAME=gcr.io/${PROJECT_ID}/cloud_build/backend:$${VERSION}
       
           if [[ "$TAG_NAME" ]]; then
             TARGET_ENV=prod
             CLUSTER_NAME=$_CLUSTER_PROD
-          elif [[ ${BRANCH_NAME} == "master" ]]; then
+          elif [[ $${BRANCH} == "master" ]]; then
             TARGET_ENV=canary
             CLUSTER_NAME=$_CLUSTER_PROD
           else 
